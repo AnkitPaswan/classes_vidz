@@ -26,6 +26,10 @@ class _DocumentSectionState extends State<DocumentSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xffff2d55),
+        title: Text('Uploaded Documents'),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -55,14 +59,10 @@ class _DocumentSectionState extends State<DocumentSection> {
                 final files = snapshot.data;
 
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     buildHeader(files.length),
-                    SizedBox(
-                      height: 12,
-                    ),
                     Expanded(
-                        child: GridView.builder(
+                        child: ListView.builder(
                       itemCount: files.length,
                       itemBuilder: (context, index) {
                         final file = files[index];
@@ -70,16 +70,6 @@ class _DocumentSectionState extends State<DocumentSection> {
                         return buildFile(context, file);
                       },
                       shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
-                          childAspectRatio: 3 / 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 20
-                          // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          //   crossAxisCount: 2,
-                          //   crossAxisSpacing: 5.0,
-                          //   mainAxisSpacing: 5.0,
-                          ),
                     ))
                   ],
                 );
@@ -90,69 +80,44 @@ class _DocumentSectionState extends State<DocumentSection> {
     );
   }
 
-  Widget buildFile(BuildContext context, FirebaseFile file) => GridView(
-    physics: NeverScrollableScrollPhysics(),
-        children: [
-          InkWell(
-            onTap: (() {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ImagePage(file: file)));
-            }),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Image.network(
-                    file.url,
-                    width: 150,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    file.name,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300, color: Colors.blue),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20),
+  Widget buildFile(BuildContext context, FirebaseFile file) => Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        child: ListTile(
+          title: Text(
+            file.name,
+            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.blue),
+          ),
+          trailing: IconButton(
+              onPressed: () async {
+                await FirebaseApi.downloadFile(file.ref);
+
+                final snackBar =
+                    SnackBar(content: Text('Downloaded ${file.name}'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
+              icon: Icon(Icons.file_download, color: Color(0xffff2d55))),
+        ),
       );
 
   Widget buildHeader(int length) => ListTile(
         contentPadding: EdgeInsets.symmetric(vertical: 16),
         tileColor: Color(0xffff2d55),
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Container(
-            width: 70,
-            height: 60,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Icon(
-                Icons.file_copy,
-                color: Colors.white,
-              ),
-            ),
+        leading: Container(
+          width: 52,
+          height: 20,
+          child: Icon(
+            Icons.file_copy,
+            color: Colors.white,
           ),
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Text(
-            '$length Files',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Colors.white,
-            ),
+        title: Text(
+          '$length Files',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Colors.white,
           ),
         ),
       );
