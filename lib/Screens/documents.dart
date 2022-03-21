@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 import 'package:vidg/pages/image_page.dart';
 import 'package:vidg/Screens/uploadfiles.dart';
 import 'package:vidg/api/firebase_api.dart';
-import 'package:vidg/model/firebase_file.dart';
+import 'package:vidg/models/firebase_file.dart';
 
 class DocumentSection extends StatefulWidget {
   const DocumentSection({Key key}) : super(key: key);
@@ -26,22 +26,6 @@ class _DocumentSectionState extends State<DocumentSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xffff2d55),
-        title: Text('Uploaded Documents'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Uploadfiles()));
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: Color(0xffff2d55),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: FutureBuilder<List<FirebaseFile>>(
         future: futureFiles,
         builder: (context, snapshot) {
@@ -60,7 +44,7 @@ class _DocumentSectionState extends State<DocumentSection> {
 
                 return Column(
                   children: [
-                    buildHeader(files.length),
+                    buildHeader(files.length, context),
                     Expanded(
                         child: ListView.builder(
                       itemCount: files.length,
@@ -81,6 +65,7 @@ class _DocumentSectionState extends State<DocumentSection> {
   }
 
   Widget buildFile(BuildContext context, FirebaseFile file) => Card(
+    shadowColor: Color(0xffff2d55),
         elevation: 3,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -101,7 +86,7 @@ class _DocumentSectionState extends State<DocumentSection> {
         ),
       );
 
-  Widget buildHeader(int length) => ListTile(
+  Widget buildHeader(int length, context) => ListTile(
         contentPadding: EdgeInsets.symmetric(vertical: 16),
         tileColor: Color(0xffff2d55),
         leading: Container(
@@ -110,6 +95,23 @@ class _DocumentSectionState extends State<DocumentSection> {
           child: Icon(
             Icons.file_copy,
             color: Colors.white,
+          ),
+        ),
+        trailing: Padding(
+          padding: const EdgeInsets.only(right: 8.0, top: 2),
+          child: FloatingActionButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: Colors.white,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Uploadfiles()));
+            },
+            child: Icon(
+              Icons.add,
+              size: 32,
+              color: Color(0xffff2d55),
+            ),
           ),
         ),
         title: Text(

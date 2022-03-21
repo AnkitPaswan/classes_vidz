@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_tab_bar/MotionTabController.dart';
-import 'package:motion_tab_bar/motiontabbar.dart';
+// import 'package:motion_tab_bar/MotionTabController.dart';
+// import 'package:motion_tab_bar/motiontabbar.dart';
+import 'package:motion_tab_bar_v2/motion-tab-bar.dart';
 import 'package:random_string/random_string.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:share/share.dart';
+import 'package:vidg/Screens/documents.dart';
 import 'package:vidg/Screens/history.dart';
+import 'package:vidg/Screens/welcome/welcome_screen.dart';
 import 'package:vidg/Services/jitsiMeetService.dart';
 import 'package:vidg/Services/services.dart';
 
@@ -19,7 +22,7 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
-  MotionTabController _tabController;
+  TabController _tabController;
   TextEditingController meeting = TextEditingController();
   TextEditingController joinmeeting = TextEditingController();
   TextEditingController subject = TextEditingController();
@@ -37,7 +40,7 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _tabController = new MotionTabController(initialIndex: 1, vsync: this);
+    _tabController = TabController(initialIndex: 1, length: 4, vsync: this);
     rendomText();
     super.initState();
     getUserData();
@@ -92,7 +95,9 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
         return dashboardMain();
         break;
       case 2:
-        return SettingScreen();
+        return DocumentSection();
+      case 3:
+        return WelcomeScreen();
       default:
         return Text("");
     }
@@ -108,12 +113,24 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
             "VidZ",
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right:8.0),
+              child: IconButton(
+                icon: Icon(Icons.menu,size: 30.0),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SettingScreen()));
+                },
+              ),
+            ),
+          ],
           elevation: 6.0,
           centerTitle: true,
           shape: const MyShapeBorder(30),
         ),
         bottomNavigationBar: MotionTabBar(
-          labels: ["History", "Call", "Setting"],
+          labels: ["History", "Call", "Document", "Quiz"],
           initialSelectedTab: "Call",
           tabIconColor: Colors.redAccent,
           tabSelectedColor: Color(0xffff2d55),
@@ -124,7 +141,12 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
               _tabController.index = value;
             });
           },
-          icons: [Icons.history, Icons.video_call, Icons.settings],
+          icons: [
+            Icons.history,
+            Icons.video_call,
+            Icons.file_copy_rounded,
+            Icons.quiz_sharp,
+          ],
           textStyle: TextStyle(color: Color(0xffff2d55)),
         ),
         body: handleBottomNavigationBar());
