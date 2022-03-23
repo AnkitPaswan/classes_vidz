@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vidg/Screens/EditProfile.dart';
 import 'package:vidg/Screens/documents.dart';
-import 'package:vidg/Screens/welcome/welcome_screen.dart';
 
 import '../pages/LoginPage.dart';
 import 'PrivacyPolicy.dart';

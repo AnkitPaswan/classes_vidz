@@ -10,9 +10,10 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:share/share.dart';
 import 'package:vidg/Screens/documents.dart';
 import 'package:vidg/Screens/history.dart';
-import 'package:vidg/Screens/welcome/welcome_screen.dart';
+import 'package:vidg/Screens/welcome.dart';
 import 'package:vidg/Services/jitsiMeetService.dart';
 import 'package:vidg/Services/services.dart';
+import 'package:vidg/views/home.dart';
 
 import 'SettingScreen.dart';
 
@@ -97,7 +98,7 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
       case 2:
         return DocumentSection();
       case 3:
-        return WelcomeScreen();
+      return WelcomeScreen();
       default:
         return Text("");
     }
@@ -106,7 +107,7 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: Color(0xffff2d55),
           title: Text(
@@ -115,9 +116,9 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right:8.0),
+              padding: const EdgeInsets.only(right: 8.0),
               child: IconButton(
-                icon: Icon(Icons.menu,size: 30.0),
+                icon: Icon(Icons.menu, size: 30.0),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SettingScreen()));
