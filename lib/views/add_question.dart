@@ -64,12 +64,12 @@ class _AddQuestionState extends State<AddQuestion> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: BackButton(
-          color: Colors.black54,
+          color: Colors.white,
         ),
         title: AppLogo(),
         brightness: Brightness.light,
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xffff2d55),
         //brightness: Brightness.li,
       ),
       body: isLoading
@@ -147,9 +147,9 @@ class _AddQuestionState extends State<AddQuestion> {
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width / 2 - 20,
                             padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 20),
+                                horizontal: 20, vertical: 20),
                             decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Color(0xffff2d55),
                                 borderRadius: BorderRadius.circular(30)),
                             child: Text(
                               "Submit",
@@ -169,9 +169,9 @@ class _AddQuestionState extends State<AddQuestion> {
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width / 2 - 40,
                             padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 20),
+                                horizontal: 20, vertical: 20),
                             decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Color(0xffff2d55),
                                 borderRadius: BorderRadius.circular(30)),
                             child: Text(
                               "Add Question",

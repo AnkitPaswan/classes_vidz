@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vidg/views/home.dart';
+import 'package:vidg/widget/widget.dart';
 
 class Results extends StatefulWidget {
   final int total, correct, incorrect, notattempted;
@@ -13,6 +14,20 @@ class _ResultsState extends State<Results> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+            )),
+        title: AppLogo(),
+        centerTitle: true,
+        backgroundColor: Color(0xffff2d55),
+        brightness: Brightness.light,
+        elevation: 0.0,
+      ),
       body: Container(
         child: Center(
           child: Column(

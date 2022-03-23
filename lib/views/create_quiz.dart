@@ -72,15 +72,6 @@ class _CreateQuizState extends State<CreateQuiz> {
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
-              // TextFormField(
-              //   validator: (val) => val.isEmpty ? "Enter Quiz Image Url" : null,
-              //   decoration: InputDecoration(
-              //     hintText: "Quiz Image Url (Optional)"
-              //   ),
-              //   onChanged: (val){
-              //     quizImgUrl = val;
-              //   },
-              // ),
               SizedBox(height: 5,),
               TextFormField(
                 validator: (val) => val.isEmpty ? "Enter Quiz Title" : null,
@@ -112,7 +103,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                     padding: EdgeInsets.symmetric(
                         horizontal: 24, vertical: 20),
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Color(0xffff2d55),
                         borderRadius: BorderRadius.circular(30)),
                     child: Text(
                       "Create Quiz",

@@ -23,9 +23,13 @@ class _HomeState extends State<Home> {
               stream: quizStream,
               builder: (context, snapshot) {
                 return snapshot.data == null
-                    ? Container(
-                        height: 200,
-                        color: Colors.pink,
+                    ? Center(
+                        child: Container(
+                          child: Text(
+                            "Their is no quize",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
                       )
                     : ListView.builder(
                         shrinkWrap: true,
@@ -67,7 +71,8 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>WelcomeScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WelcomeScreen()));
             },
             icon: Icon(Icons.arrow_back)),
         title: AppLogo(),
@@ -90,7 +95,7 @@ class _HomeState extends State<Home> {
 }
 
 class QuizTile extends StatelessWidget {
-  final String  title, id, description;
+  final String title, id, description;
   final int noOfQuestions;
 
   QuizTile(
@@ -110,7 +115,7 @@ class QuizTile extends StatelessWidget {
       child: Container(
         //
         padding: EdgeInsets.only(bottom: 8, right: 8, left: 8, top: 8),
-        height: 150,
+        height: 160,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Stack(
@@ -121,7 +126,15 @@ class QuizTile extends StatelessWidget {
               //   width: MediaQuery.of(context).size.width,
               // ),
               Container(
-                color: Colors.black26,
+                decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromARGB(255, 231, 80, 108),
+                    Color.fromARGB(255, 50, 53, 53)
+                  ],
+                )),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

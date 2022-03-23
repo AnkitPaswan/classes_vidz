@@ -22,7 +22,7 @@ class WelcomeScreen extends StatelessWidget {
         child: Container(
           height: 120,
           width: double.infinity,
-          child: Card(
+          child: Card(color: Color(0xffff2d55),
             elevation: 3,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -32,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     "Click To Play Quiz",
-                    style: TextStyle(
+                    style: TextStyle(color: Colors.white,
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 )),
@@ -50,6 +50,7 @@ class WelcomeScreen extends StatelessWidget {
           height: 120,
           width: double.infinity,
           child: Card(
+            color: Color(0xffff2d55),
             elevation: 3,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -59,7 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     "Click To Create New Quize",
-                    style: TextStyle(
+                    style: TextStyle(color: Colors.white,
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 )),

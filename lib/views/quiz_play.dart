@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:vidg/Screens/welcome.dart';
 import 'package:vidg/Services/database.dart';
 import 'package:vidg/models/question_model.dart';
 import 'package:vidg/views/results.dart';
@@ -17,7 +16,7 @@ class QuizPlay extends StatefulWidget {
 
 int _correct = 0;
 int _incorrect = 0;
-int _notAttempted = 0;
+int _attempted = 0;
 int total = 0;
 
 /// Stream
@@ -33,7 +32,7 @@ class _QuizPlayState extends State<QuizPlay> {
   void initState() {
     databaseService.getQuestionData(widget.quizId).then((value) {
       questionSnaphot = value;
-      _notAttempted = questionSnaphot.docs.length;
+      _attempted = questionSnaphot.docs.length;
       _correct = 0;
       _incorrect = 0;
       isLoading = false;
@@ -192,7 +191,7 @@ class _InfoHeaderState extends State<InfoHeader> {
                       ),
                       NoOfQuestionTile(
                         text: "NotAttempted",
-                        number: _notAttempted,
+                        number: _attempted,
                       ),
                     ],
                   ),
@@ -218,7 +217,7 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8),
+      padding: const EdgeInsets.only(left: 8.0, right: 8,top:8),
       child: Container(
         decoration: BoxDecoration(
           // border: Border.all(color: Colors.red.withOpacity(0.7)),
@@ -233,11 +232,11 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10,vertical: 4),
+                margin: EdgeInsets.symmetric(horizontal: 10,vertical: 2),
                 child: Text(
                   "Q${widget.index + 1}). ${widget.questionModel.question}",
                   style: TextStyle(
-                      fontSize: 18, color: Colors.black.withOpacity(0.8)),
+                      fontSize: 18,fontWeight:FontWeight.bold, color: Colors.black.withOpacity(0.8)),
                 ),
               ),
               SizedBox(
@@ -256,14 +255,14 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                         optionSelected = widget.questionModel.option1;
                         widget.questionModel.answered = true;
                         _correct = _correct + 1;
-                        _notAttempted = _notAttempted + 1;
+                        _attempted = _attempted+1 ;
                       });
                     } else {
                       setState(() {
                         optionSelected = widget.questionModel.option1;
                         widget.questionModel.answered = true;
                         _incorrect = _incorrect + 1;
-                        _notAttempted = _notAttempted - 1;
+                        _attempted = _attempted - 1;
                       });
                     }
                   }
@@ -298,14 +297,14 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                         optionSelected = widget.questionModel.option2;
                         widget.questionModel.answered = true;
                         _correct = _correct + 1;
-                        _notAttempted = _notAttempted + 1;
+                        _attempted = _attempted - 1;
                       });
                     } else {
                       setState(() {
                         optionSelected = widget.questionModel.option2;
                         widget.questionModel.answered = true;
                         _incorrect = _incorrect + 1;
-                        _notAttempted = _notAttempted - 1;
+                      _attempted = _attempted + 1;
                       });
                     }
                   }
@@ -341,14 +340,14 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                         optionSelected = widget.questionModel.option3;
                         widget.questionModel.answered = true;
                         _correct = _correct + 1;
-                        _notAttempted = _notAttempted + 1;
+                        _attempted = _attempted + 1;
                       });
                     } else {
                       setState(() {
                         optionSelected = widget.questionModel.option3;
                         widget.questionModel.answered = true;
                         _incorrect = _incorrect + 1;
-                        _notAttempted = _notAttempted - 1;
+                        _attempted = _attempted - 1;
                       });
                     }
                   }
@@ -384,14 +383,14 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                         optionSelected = widget.questionModel.option4;
                         widget.questionModel.answered = true;
                         _correct = _correct + 1;
-                        _notAttempted = _notAttempted + 1;
+                        _attempted = _attempted + 1;
                       });
                     } else {
                       setState(() {
                         optionSelected = widget.questionModel.option4;
                         widget.questionModel.answered = true;
                         _incorrect = _incorrect + 1;
-                        _notAttempted = _notAttempted - 1;
+                        _attempted = _attempted - 1;
                       });
                     }
                   }
