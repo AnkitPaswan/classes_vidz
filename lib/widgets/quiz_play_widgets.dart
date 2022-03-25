@@ -31,7 +31,7 @@ class _OptionTileState extends State<OptionTile> {
                     width: 1.5),
                 color: widget.optionSelected == widget.description
                     // ? widget.description == widget.correctAnswer
-                    ? Color(0xffff2d55).withOpacity(0.7)
+                    ? Color(0xffff2d55)
                     : Colors.white.withOpacity(0.7),
                 // : Colors.white,
                 borderRadius: BorderRadius.circular(24)),

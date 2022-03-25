@@ -65,7 +65,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
-                          "Version -: 1.0",
+                          "Version -: 1.1.0",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   FirebaseServices services = FirebaseServices();
   bool isVisible = true;
+  bool enableTeacher = false;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -173,6 +175,42 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 42.0, vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("Teacher",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              )),
+                          SizedBox(height: 10),
+                          Container(
+                            child: FlutterSwitch(
+                                width: 60.0,
+                                height: 30.0,
+                                valueFontSize: 12.0,
+                                toggleSize: 20.0,
+                                value: enableTeacher,
+                                activeColor: Color(0xffff2d55),
+                                inactiveColor: Colors.grey,
+                                inactiveToggleColor: Colors.black,
+                                inactiveTextColor: Colors.white,
+                                activeText: "",
+                                inactiveText: "",
+                                activeTextColor: Colors.black,
+                                showOnOff: true,
+                                onToggle: (val) {
+                                  setState(() {
+                                    enableTeacher = val;
+                                  });
+                                }),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: MaterialButton(
                         onPressed: () async {
@@ -185,7 +223,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   email.text,
                                   password.text,
                                   name.text,
-                                  mobile.text);
+                                  mobile.text,enableTeacher);
                               if (result != null) {
                                 print(result);
                                 setState(() {

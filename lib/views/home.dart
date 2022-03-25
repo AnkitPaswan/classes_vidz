@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vidg/Screens/welcome.dart';
 import 'package:vidg/Services/database.dart';
-import 'package:vidg/views/create_quiz.dart';
 import 'package:vidg/views/quiz_play.dart';
 import 'package:vidg/widget/widget.dart';
 
