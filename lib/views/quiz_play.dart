@@ -1,12 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:vidg/Services/database.dart';
 import 'package:vidg/models/question_model.dart';
+import 'package:vidg/views/home.dart';
 import 'package:vidg/views/results.dart';
 import 'package:vidg/widget/widget.dart';
+import 'package:vidg/widgets/progress_bar.dart';
 import 'package:vidg/widgets/quiz_play_widgets.dart';
 
+import '../widgets/time_controller.dart';
+
 class QuizPlay extends StatefulWidget {
+  final timeController = Get.put(TimeController());
   final String quizId;
   QuizPlay(this.quizId);
 
@@ -37,17 +46,11 @@ class _QuizPlayState extends State<QuizPlay> {
       _incorrect = 0;
       isLoading = false;
       total = questionSnaphot.docs.length;
+      widget.timeController.setTime = total * 60;
+
       setState(() {});
       print("init don $total ${widget.quizId} ");
     });
-
-    if (infoStream == null) {
-      infoStream = Stream<List<int>>.periodic(Duration(milliseconds: 100), (x) {
-        // print("this is x $x");
-        return [_correct, _incorrect];
-      });
-    }
-
     super.initState();
   }
 
@@ -91,65 +94,63 @@ class _QuizPlayState extends State<QuizPlay> {
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Get.off((Home()));
               },
               icon: Icon(
                 Icons.arrow_back,
-              )),
-          title: AppLogo(),
-          centerTitle: true,
+              )),centerTitle: true,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+            AppLogo(),
+            Padding(
+              padding: const EdgeInsets.only(bottom:32.0),
+              child: InfoHeader(
+                length: questionSnaphot.docs.length,
+              ),
+            ),
+          ]),
           backgroundColor: Color(0xffff2d55),
-          brightness: Brightness.light,
           elevation: 0.0,
+          brightness: Brightness.light,
         ),
         body: isLoading
             ? Container(
                 child: Center(child: CircularProgressIndicator()),
               )
             : SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    children: [
-                      InfoHeader(
-                        length: questionSnaphot.docs.length,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      questionSnaphot.docs == null
-                          ? Container(
-                              child: Center(
-                                child: Text("No Data"),
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: questionSnaphot.docs.length,
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                print(questionSnaphot.docs.length);
-                                return QuizPlayTile(
-                                  questionModel:
-                                      getQuestionModelFromDatasnapshot(
-                                          questionSnaphot.docs[index]),
-                                  index: index,
-                                );
-                              })
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    questionSnaphot.docs == null
+                        ? Container(
+                            child: Center(
+                              child: Text("No Data"),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: questionSnaphot.docs.length,
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              print(questionSnaphot.docs.length);
+                              return QuizPlayTile(
+                                questionModel: getQuestionModelFromDatasnapshot(
+                                    questionSnaphot.docs[index]),
+                                index: index,
+                              );
+                            })
+                  ],
                 ),
               ),
         floatingActionButton: FloatingActionButton(
             backgroundColor: Color(0xffff2d55),
             child: Icon(Icons.check),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Results(
-                          correct: _correct,
-                          incorrect: _incorrect,
-                          total: total)));
+              Get.to((Results(
+                  correct: _correct, incorrect: _incorrect, total: total)));
             }));
   }
 }
@@ -166,38 +167,7 @@ class InfoHeader extends StatefulWidget {
 class _InfoHeaderState extends State<InfoHeader> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: infoStream,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Container(
-                  height: 40,
-                  margin: EdgeInsets.only(left: 14),
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      NoOfQuestionTile(
-                        text: "Total",
-                        number: widget.length,
-                      ),
-                      NoOfQuestionTile(
-                        text: "Correct",
-                        number: _correct,
-                      ),
-                      NoOfQuestionTile(
-                        text: "Incorrect",
-                        number: _incorrect,
-                      ),
-                      NoOfQuestionTile(
-                        text: "NotAttempted",
-                        number: _attempted,
-                      ),
-                    ],
-                  ),
-                )
-              : Container();
-        });
+    return ProgressBar();
   }
 }
 
@@ -217,207 +187,205 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8,top:8),
+      padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
       child: Container(
         decoration: BoxDecoration(
-          // border: Border.all(color: Colors.red.withOpacity(0.7)),
           color: Colors.white,
           borderRadius: BorderRadius.all(
             Radius.circular(6),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10,vertical: 2),
-                child: Text(
-                  "Q${widget.index + 1}). ${widget.questionModel.question}",
-                  style: TextStyle(
-                      fontSize: 18,fontWeight:FontWeight.bold, color: Colors.black.withOpacity(0.8)),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10,vertical: 4),
+              child: Text(
+                "Q${widget.index + 1}). ${widget.questionModel.question}",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black.withOpacity(0.8)),
               ),
-              SizedBox(
-                height: 4,
-              ),
-              Divider(
-                color: Colors.grey,
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (!widget.questionModel.answered) {
-                    ///correct
-                    if (widget.questionModel.option1 ==
-                        widget.questionModel.correctOption) {
-                      setState(() {
-                        optionSelected = widget.questionModel.option1;
-                        widget.questionModel.answered = true;
-                        _correct = _correct + 1;
-                        _attempted = _attempted+1 ;
-                      });
-                    } else {
-                      setState(() {
-                        optionSelected = widget.questionModel.option1;
-                        widget.questionModel.answered = true;
-                        _incorrect = _incorrect + 1;
-                        _attempted = _attempted - 1;
-                      });
-                    }
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(136, 230, 226, 226),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6),
-                        ),
-                      ),
-                      child: OptionTile(
-                        option: "A",
-                        description: "${widget.questionModel.option1}",
-                        correctAnswer: widget.questionModel.correctOption,
-                        optionSelected: optionSelected,
-                      )),
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (!widget.questionModel.answered) {
-                    ///correct
-                    if (widget.questionModel.option2 ==
-                        widget.questionModel.correctOption) {
-                      setState(() {
-                        optionSelected = widget.questionModel.option2;
-                        widget.questionModel.answered = true;
-                        _correct = _correct + 1;
-                        _attempted = _attempted - 1;
-                      });
-                    } else {
-                      setState(() {
-                        optionSelected = widget.questionModel.option2;
-                        widget.questionModel.answered = true;
-                        _incorrect = _incorrect + 1;
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Divider(
+              color: Colors.grey,
+            ),
+            GestureDetector(
+              onTap: () {
+                if (!widget.questionModel.answered) {
+                  ///correct
+                  if (widget.questionModel.option1 ==
+                      widget.questionModel.correctOption) {
+                    setState(() {
+                      optionSelected = widget.questionModel.option1;
+                      widget.questionModel.answered = true;
+                      _correct = _correct + 1;
                       _attempted = _attempted + 1;
-                      });
-                    }
+                    });
+                  } else {
+                    setState(() {
+                      optionSelected = widget.questionModel.option1;
+                      widget.questionModel.answered = true;
+                      _incorrect = _incorrect + 1;
+                      _attempted = _attempted - 1;
+                    });
                   }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: Container(
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Container(
                     decoration: BoxDecoration(
                       color: Color.fromARGB(136, 230, 226, 226),
                       borderRadius: BorderRadius.all(
-                          Radius.circular(6),
-                        ),
+                        Radius.circular(6),
+                      ),
                     ),
                     child: OptionTile(
-                      option: "B",
-                      description: "${widget.questionModel.option2}",
+                      option: "A",
+                      description: "${widget.questionModel.option1}",
                       correctAnswer: widget.questionModel.correctOption,
                       optionSelected: optionSelected,
-                    ),
-                  ),
-                ),
+                    )),
               ),
-              SizedBox(
-                height: 4,
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (!widget.questionModel.answered) {
-                    ///correct
-                    if (widget.questionModel.option3 ==
-                        widget.questionModel.correctOption) {
-                      setState(() {
-                        optionSelected = widget.questionModel.option3;
-                        widget.questionModel.answered = true;
-                        _correct = _correct + 1;
-                        _attempted = _attempted + 1;
-                      });
-                    } else {
-                      setState(() {
-                        optionSelected = widget.questionModel.option3;
-                        widget.questionModel.answered = true;
-                        _incorrect = _incorrect + 1;
-                        _attempted = _attempted - 1;
-                      });
-                    }
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            GestureDetector(
+              onTap: () {
+                if (!widget.questionModel.answered) {
+                  ///correct
+                  if (widget.questionModel.option2 ==
+                      widget.questionModel.correctOption) {
+                    setState(() {
+                      optionSelected = widget.questionModel.option2;
+                      widget.questionModel.answered = true;
+                      _correct = _correct + 1;
+                      _attempted = _attempted - 1;
+                    });
+                  } else {
+                    setState(() {
+                      optionSelected = widget.questionModel.option2;
+                      widget.questionModel.answered = true;
+                      _incorrect = _incorrect + 1;
+                      _attempted = _attempted + 1;
+                    });
                   }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(136, 230, 226, 226),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(6),
-                        ),
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(136, 230, 226, 226),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6),
                     ),
-                    child: OptionTile(
-                      option: "C",
-                      description: "${widget.questionModel.option3}",
-                      correctAnswer: widget.questionModel.correctOption,
-                      optionSelected: optionSelected,
-                    ),
+                  ),
+                  child: OptionTile(
+                    option: "B",
+                    description: "${widget.questionModel.option2}",
+                    correctAnswer: widget.questionModel.correctOption,
+                    optionSelected: optionSelected,
                   ),
                 ),
               ),
-              SizedBox(
-                height: 4,
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (!widget.questionModel.answered) {
-                    ///correct
-                    if (widget.questionModel.option4 ==
-                        widget.questionModel.correctOption) {
-                      setState(() {
-                        optionSelected = widget.questionModel.option4;
-                        widget.questionModel.answered = true;
-                        _correct = _correct + 1;
-                        _attempted = _attempted + 1;
-                      });
-                    } else {
-                      setState(() {
-                        optionSelected = widget.questionModel.option4;
-                        widget.questionModel.answered = true;
-                        _incorrect = _incorrect + 1;
-                        _attempted = _attempted - 1;
-                      });
-                    }
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            GestureDetector(
+              onTap: () {
+                if (!widget.questionModel.answered) {
+                  ///correct
+                  if (widget.questionModel.option3 ==
+                      widget.questionModel.correctOption) {
+                    setState(() {
+                      optionSelected = widget.questionModel.option3;
+                      widget.questionModel.answered = true;
+                      _correct = _correct + 1;
+                      _attempted = _attempted + 1;
+                    });
+                  } else {
+                    setState(() {
+                      optionSelected = widget.questionModel.option3;
+                      widget.questionModel.answered = true;
+                      _incorrect = _incorrect + 1;
+                      _attempted = _attempted - 1;
+                    });
                   }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(136, 230, 226, 226),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(6),
-                        ),
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(136, 230, 226, 226),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6),
                     ),
-                    child: OptionTile(
-                      option: "D",
-                      description: "${widget.questionModel.option4}",
-                      correctAnswer: widget.questionModel.correctOption,
-                      optionSelected: optionSelected,
-                    ),
+                  ),
+                  child: OptionTile(
+                    option: "C",
+                    description: "${widget.questionModel.option3}",
+                    correctAnswer: widget.questionModel.correctOption,
+                    optionSelected: optionSelected,
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            GestureDetector(
+              onTap: () {
+                if (!widget.questionModel.answered) {
+                  ///correct
+                  if (widget.questionModel.option4 ==
+                      widget.questionModel.correctOption) {
+                    setState(() {
+                      optionSelected = widget.questionModel.option4;
+                      widget.questionModel.answered = true;
+                      _correct = _correct + 1;
+                      _attempted = _attempted + 1;
+                    });
+                  } else {
+                    setState(() {
+                      optionSelected = widget.questionModel.option4;
+                      widget.questionModel.answered = true;
+                      _incorrect = _incorrect + 1;
+                      _attempted = _attempted - 1;
+                    });
+                  }
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(136, 230, 226, 226),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(6),
+                    ),
+                  ),
+                  child: OptionTile(
+                    option: "D",
+                    description: "${widget.questionModel.option4}",
+                    correctAnswer: widget.questionModel.correctOption,
+                    optionSelected: optionSelected,
+                  ),
+                ),
               ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
         ),
       ),
     );

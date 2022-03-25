@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vidg/Screens/EditProfile.dart';
 import 'package:vidg/Screens/documents.dart';
@@ -30,8 +31,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 width: double.infinity,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EditProfile()));
+                    Get.to(EditProfile());
                   },
                   child: Card(
                     elevation: 3,
@@ -80,10 +80,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 width: double.infinity,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PrivacyPolicy()));
+                    Get.to( PrivacyPolicy());
                   },
                   child: Card(
                     elevation: 3,
@@ -114,8 +111,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         await SharedPreferences.getInstance();
                     pref.clear();
                     await FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                    Get.to(LoginPage());
                   },
                   child: Card(
                     elevation: 3,

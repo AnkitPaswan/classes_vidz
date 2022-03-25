@@ -1,8 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:vidg/pages/image_page.dart';
+import 'package:get/get.dart';
 import 'package:vidg/Screens/uploadfiles.dart';
 import 'package:vidg/api/firebase_api.dart';
 import 'package:vidg/models/firebase_file.dart';
@@ -65,7 +64,7 @@ class _DocumentSectionState extends State<DocumentSection> {
   }
 
   Widget buildFile(BuildContext context, FirebaseFile file) => Card(
-    shadowColor: Color(0xffff2d55),
+        shadowColor: Color(0xffff2d55),
         elevation: 3,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -104,8 +103,7 @@ class _DocumentSectionState extends State<DocumentSection> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             backgroundColor: Colors.white,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Uploadfiles()));
+              Get.to(Uploadfiles());
             },
             child: Icon(
               Icons.add,

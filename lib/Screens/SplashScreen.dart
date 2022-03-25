@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vidg/Screens/Dashboard.dart';
 import '../pages/LoginPage.dart';
 
@@ -51,13 +52,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     checkConnection(context);
     isLogin();
-    Timer(
-        Duration(seconds: 3),
-        () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    isLoginValue ? DashBoard() : LoginPage())));
+    Timer(Duration(seconds: 3),
+        () => Get.to(isLoginValue ? DashBoard() : LoginPage()));
 
     super.initState();
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vidg/Services/services.dart';
@@ -113,7 +114,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-
                               labelText: 'Email',
                               prefixIcon: Icon(Icons.email),
                               labelStyle: TextStyle(fontSize: 15)),
@@ -127,13 +127,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: mobile,
                           keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           validator: (mobile) {
                             if (mobile == null || mobile.isEmpty) {
                               return "Mobile Is Empty";
-                            }
-
-                            else if (mobile.length !=10){
+                            } else if (mobile.length != 10) {
                               return "Please Enter Valid Mobile Number";
                             }
                             return null;
@@ -182,7 +182,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                 isLoading = true;
                               });
                               dynamic result = await services.emailRegister(
-                                  email.text, password.text,name.text,mobile.text);
+                                  email.text,
+                                  password.text,
+                                  name.text,
+                                  mobile.text);
                               if (result != null) {
                                 print(result);
                                 setState(() {
@@ -196,8 +199,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 _scaffoldKey.currentState.showSnackBar(
                                     new SnackBar(
                                         behavior: SnackBarBehavior.floating,
-                                        content: Text(
-                                            "Email is Already in Use")));
+                                        content:
+                                            Text("Email is Already in Use")));
                               }
                             }
                           }
@@ -228,10 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Center(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                            Get.to(LoginPage());
                           },
                           child: RichText(
                             text: TextSpan(children: [

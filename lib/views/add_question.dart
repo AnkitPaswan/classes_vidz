@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 // import 'package:quizapp2/services/database.dart';
 // import 'package:quizapp2/widget/widget.dart';
 import 'package:vidg/Services/database.dart';
 import 'package:vidg/widget/widget.dart';
 
 class AddQuestion extends StatefulWidget {
-
   final String quizId;
   AddQuestion(this.quizId);
 
@@ -22,9 +22,7 @@ class _AddQuestionState extends State<AddQuestion> {
   String question = "", option1 = "", option2 = "", option3 = "", option4 = "";
 
   uploadQuizData() {
-
     if (_formKey.currentState.validate()) {
-
       setState(() {
         isLoading = true;
       });
@@ -47,13 +45,10 @@ class _AddQuestionState extends State<AddQuestion> {
         setState(() {
           isLoading = false;
         });
-
-      }).catchError((e){
+      }).catchError((e) {
         print(e);
       });
-
-
-    }else{
+    } else {
       print("error is happening ");
     }
   }
@@ -106,8 +101,8 @@ class _AddQuestionState extends State<AddQuestion> {
                     TextFormField(
                       validator: (val) => val.isEmpty ? "Option2 " : null,
                       decoration: InputDecoration(hintText: "Option2"),
-                      onChanged: (val){
-                       option2 = val;
+                      onChanged: (val) {
+                        option2 = val;
                       },
                     ),
                     SizedBox(
@@ -116,9 +111,8 @@ class _AddQuestionState extends State<AddQuestion> {
                     TextFormField(
                       validator: (val) => val.isEmpty ? "Option3 " : null,
                       decoration: InputDecoration(hintText: "Option3"),
-                      onChanged: (val){
+                      onChanged: (val) {
                         option3 = val;
-
                       },
                     ),
                     SizedBox(
@@ -127,7 +121,7 @@ class _AddQuestionState extends State<AddQuestion> {
                     TextFormField(
                       validator: (val) => val.isEmpty ? "Option4 " : null,
                       decoration: InputDecoration(hintText: "Option4"),
-                      onChanged: (val){
+                      onChanged: (val) {
                         option4 = val;
                       },
                     ),
@@ -139,9 +133,7 @@ class _AddQuestionState extends State<AddQuestion> {
                       children: [
                         GestureDetector(
                           onTap: () {
-
-                           Navigator.pop(context);
-
+                            Get.to(context);
                           },
                           child: Container(
                             alignment: Alignment.center,

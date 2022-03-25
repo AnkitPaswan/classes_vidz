@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vidg/Screens/Dashboard.dart';
@@ -129,7 +129,6 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.only(top: 20),
                       child: MaterialButton(
                         onPressed: () async {
-
                           if (_formKey.currentState.validate()) {
                             setState(() {
                               isLoading = true;
@@ -141,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                               setState(() {
                                 isLoading = false;
                               });
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>DashBoard()));
+                              Get.to((DashBoard()));
                             } else {
                               setState(() {
                                 isLoading = false;
@@ -184,16 +183,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.only(top: 30),
                       child: Center(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterPage()));
+                            Get.to(RegisterPage());
                           },
                           child: RichText(
                             text: TextSpan(children: [

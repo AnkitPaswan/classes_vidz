@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vidg/views/home.dart';
 import 'package:vidg/widget/widget.dart';
 
 class Results extends StatefulWidget {
-  final int total, correct, incorrect, notattempted;
-  Results({this.incorrect, this.total, this.correct, this.notattempted});
+  final int total, correct, incorrect;
+  Results({this.incorrect, this.total, this.correct});
 
   @override
   _ResultsState createState() => _ResultsState();
@@ -17,7 +18,7 @@ class _ResultsState extends State<Results> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+              Get.to(Home());
             },
             icon: Icon(
               Icons.arrow_back,

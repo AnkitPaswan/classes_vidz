@@ -9,7 +9,8 @@ class PrivacyPolicy extends StatefulWidget {
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
   @override
   Widget build(BuildContext context) {
-    const policy = """ 
+    const policy =
+        """ 
     <!DOCTYPE html>
     <html>
     <head>
@@ -21,7 +22,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
     <body>
     <br>
     <center><strong>Privacy Policy</strong></center> <p align="justify">
-                  Shailandra Rajput built the VidZ app as
+                  Shailandra Rajput built the Vikalp app as
                   a Free app. This SERVICE is provided by
                   Shailandra Rajput at no cost and is intended for use as
                   is.
@@ -38,7 +39,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 </p> <p>
                   The terms used in this Privacy Policy have the same meanings
                   as in our Terms and Conditions, which is accessible at
-                  VidZ unless otherwise defined in this Privacy Policy.
+                  Vikalp unless otherwise defined in this Privacy Policy.
                 </p> <p><strong>Information Collection and Use</strong></p> <p>
                   For a better experience, while using our Service, I
                   may require you to provide us with certain personally

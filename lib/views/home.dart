@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vidg/Screens/welcome.dart';
 import 'package:vidg/Services/database.dart';
 import 'package:vidg/views/create_quiz.dart';
@@ -24,12 +25,7 @@ class _HomeState extends State<Home> {
               builder: (context, snapshot) {
                 return snapshot.data == null
                     ? Center(
-                        child: Container(
-                          child: Text(
-                            "Their is no quize",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
+                        child: Container(),
                       )
                     : ListView.builder(
                         shrinkWrap: true,
@@ -71,25 +67,15 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => WelcomeScreen()));
+              Get.to(WelcomeScreen());
             },
             icon: Icon(Icons.arrow_back)),
         title: AppLogo(),
         centerTitle: true,
         elevation: 0.0,
         backgroundColor: Color(0xffff2d55),
-        //brightness: Brightness.li,
       ),
       body: quizList(),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Color(0xffff2d55),
-      //   child: Icon(Icons.add),
-      //   onPressed: () {
-      //     Navigator.push(
-      //         context, MaterialPageRoute(builder: (context) => CreateQuiz()));
-      //   },
-      // ),
     );
   }
 }
@@ -100,7 +86,6 @@ class QuizTile extends StatelessWidget {
 
   QuizTile(
       {@required this.title,
-      // @required this.imageUrl,
       @required this.description,
       @required this.id,
       @required this.noOfQuestions});
@@ -109,8 +94,7 @@ class QuizTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => QuizPlay(id)));
+        Get.to(QuizPlay(id));
       },
       child: Container(
         //
@@ -120,14 +104,9 @@ class QuizTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: Stack(
             children: [
-              // Image.network(
-              //   imageUrl,
-              //   fit: BoxFit.cover,
-              //   width: MediaQuery.of(context).size.width,
-              // ),
               Container(
                 decoration: new BoxDecoration(
-                gradient: new LinearGradient(
+                    gradient: new LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [

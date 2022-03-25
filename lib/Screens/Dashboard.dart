@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-// import 'package:motion_tab_bar/MotionTabController.dart';
-// import 'package:motion_tab_bar/motiontabbar.dart';
+import 'package:get/get.dart';
 import 'package:motion_tab_bar_v2/motion-tab-bar.dart';
 import 'package:random_string/random_string.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -13,7 +12,7 @@ import 'package:vidg/Screens/history.dart';
 import 'package:vidg/Screens/welcome.dart';
 import 'package:vidg/Services/jitsiMeetService.dart';
 import 'package:vidg/Services/services.dart';
-import 'package:vidg/views/home.dart';
+import 'package:vidg/pages/help_page.dart';
 
 import 'SettingScreen.dart';
 
@@ -66,7 +65,7 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
 
   shareMeetingCode() {
     Share.share(
-        "Hey Buddy! Use This Code to Do meeting with me on VidZ Download App and in Join Meeting Use Code $meetingCode");
+        "Hey Buddy! Use This Code to Do meeting with me on Vikalp Download App and in Join Meeting Use Code $meetingCode");
   }
 
   rendomText() {
@@ -98,7 +97,7 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
       case 2:
         return DocumentSection();
       case 3:
-      return WelcomeScreen();
+        return WelcomeScreen();
       default:
         return Text("");
     }
@@ -107,11 +106,24 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Color(0xffff2d55),
+          leading: Center(
+              child: TextButton(
+            onPressed: () {
+              Get.to(HelpSection());
+            },
+            child: Text(
+              "Help",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white),
+            ),
+          )),
           title: Text(
-            "VidZ",
+            "Vikalp",
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
           actions: [
@@ -120,8 +132,7 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
               child: IconButton(
                 icon: Icon(Icons.menu, size: 30.0),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SettingScreen()));
+                  Get.to(SettingScreen());
                 },
               ),
             ),
@@ -174,7 +185,7 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
                   text: "Create Meeting",
                 ),
                 Tab(
-                  text: "Join Meeting",
+                  text: "Join Class",
                 ),
               ],
               labelColor: Colors.black,
@@ -327,46 +338,60 @@ class _DashBoardState extends State<DashBoard> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                GestureDetector(
-                    onTap: () {
-                      shareMeetingCode();
-                    },
-                    child: Text(
-                      "Share This Meeting Code?",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )),
                 Padding(
-                  padding: EdgeInsets.only(top: 10, left: 30, right: 30),
-                  child: MaterialButton(
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        services.addMeetingInFirebase(
-                          subject.text,
-                          meetingCode,
-                          email,
-                        );
-                        meets.joinMeeting(meetingCode, name, email,
-                            subject.text, enableAudio, enableVideo);
-                      }
-                    },
-                    child: isLoading != true
-                        ? Text(
-                            'Create Meeting'.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        : CircularProgressIndicator(
-                            backgroundColor: Colors.white,
+                  padding: const EdgeInsets.only(left: 50.0),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, left: 30, right: 20),
+                        child: MaterialButton(
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              services.addMeetingInFirebase(
+                                subject.text,
+                                meetingCode,
+                                email,
+                              );
+                              meets.joinMeeting(meetingCode, name, email,
+                                  subject.text, enableAudio, enableVideo);
+                            }
+                          },
+                          child: isLoading != true
+                              ? Text(
+                                  'Create Meeting'.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : CircularProgressIndicator(
+                                  backgroundColor: Colors.white,
+                                ),
+                          color: Color(0xffff2d55),
+                          elevation: 0,
+                          minWidth: 100,
+                          height: 50,
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Color(0xffff2d55),
+                              borderRadius: BorderRadius.circular(50)),
+                          child: IconButton(
+                            onPressed: () {
+                              shareMeetingCode();
+                            },
+                            icon: Icon(Icons.share, color: Colors.white),
                           ),
-                    color: Color(0xffff2d55),
-                    elevation: 0,
-                    minWidth: 400,
-                    height: 50,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
