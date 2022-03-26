@@ -223,12 +223,17 @@ class _RegisterPageState extends State<RegisterPage> {
                                   email.text,
                                   password.text,
                                   name.text,
-                                  mobile.text,enableTeacher);
+                                  mobile.text,
+                                  enableTeacher);
                               if (result != null) {
                                 print(result);
                                 setState(() {
                                   isLoading = false;
                                 });
+                                _scaffoldKey.currentState.showSnackBar(
+                                    new SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        content: Text("Register Sucessfully")));
                                 print("Register Sucessfully");
                               } else {
                                 setState(() {

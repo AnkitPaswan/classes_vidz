@@ -65,7 +65,7 @@ class _DocumentSectionState extends State<DocumentSection> {
 
   Widget buildFile(BuildContext context, FirebaseFile file) => Card(
         shadowColor: Color(0xffff2d55),
-        elevation: 3,
+        elevation: 4,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12))),
         child: ListTile(
@@ -97,7 +97,7 @@ class _DocumentSectionState extends State<DocumentSection> {
           ),
         ),
         trailing: Padding(
-          padding: const EdgeInsets.only(right: 8.0, top: 2),
+          padding: const EdgeInsets.only(right: 12.0, top: 4),
           child: FloatingActionButton(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

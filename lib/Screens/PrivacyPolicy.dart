@@ -9,8 +9,7 @@ class PrivacyPolicy extends StatefulWidget {
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
   @override
   Widget build(BuildContext context) {
-    const policy =
-        """ 
+    const policy = """ 
         
       <!DOCTYPE html>
     <html>
@@ -121,8 +120,19 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 </p> <p>This policy is effective as of 2022-03-25</p> <p><strong>Contact Us</strong></p> <p>
                   If you have any questions or suggestions about our
                   Privacy Policy, do not hesitate to contact us at narendok@gmail.com.
-                  <P><p>
                 
+                  <h3>© Created by REVAMPH</h3>
+                  <h4>For further information contact us at <a href="mailto: revamph.co@gmail.com"   target="_blank">revamph.co@gmail.com</a></h4>
+                 
+                <style type="text/css">
+                      h3 ,h4{
+                        color: black;
+                        displey: flex;
+                        text-align: center;
+                      }
+                </style>
+
+
     </body>
     </html>
 

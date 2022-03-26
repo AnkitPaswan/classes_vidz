@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -33,14 +34,14 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   getUserData() async {
-    final databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child(FirebaseAuth.instance.currentUser.uid);
-    databaseReference.once().then((DatabaseEvent event) {
-      Map<dynamic, dynamic> values = event.snapshot.value;
-      userName = values["name"];
-      userEmail = values["email"];
-      userMobile = values["number"];
+    final databaseReference = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get();
+    databaseReference.then((data) {
+      userName = data["name"];
+      userEmail = data["email"];
+      userMobile = data["number"];
       name.text = userName;
       email.text = userEmail;
       mobile.text = userMobile;

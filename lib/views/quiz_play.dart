@@ -9,7 +9,7 @@ import 'package:vidg/models/question_model.dart';
 import 'package:vidg/views/home.dart';
 import 'package:vidg/views/results.dart';
 import 'package:vidg/widget/widget.dart';
-import 'package:vidg/widgets/progress_bar.dart';
+import 'package:vidg/widgets/timer.dart';
 import 'package:vidg/widgets/quiz_play_widgets.dart';
 
 import '../widgets/time_controller.dart';
